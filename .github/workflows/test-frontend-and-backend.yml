@@ -1,0 +1,43 @@
+name: Test Frontend and Backend
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test-frontend:
+    name: Test - Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/main/frontend
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run test command
+        run: npm test
+
+  test-backend:
+    name: Test - Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn test
