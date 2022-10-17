@@ -1,5 +1,6 @@
 package com.dev3065.TicTacToe.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +13,15 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import javax.inject.Inject;
 import java.nio.charset.Charset;
+import java.util.List;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(LogicController.class)
 @ExtendWith(SpringExtension.class)
@@ -31,23 +32,23 @@ class LogicControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(APPLICATION_JSON.getType(), APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
+    @Inject
+    private ObjectMapper objectMapper;
 
     @Test
-    void hello() throws Exception {
-        RequestBuilder request = get("/hello1234");
-        MvcResult result = mockMvc.perform(request).andReturn();
-        assertEquals("Hello World!", result.getResponse().getContentAsString());
-    }
+    void receivesBoardState() throws Exception {
+        IncomingJson incomingJson = new IncomingJson(List.of("X", "O", "X", "O", "X", "O", "X", "O", "X"));
 
-    @Test
-    void hello2() throws Exception {
         MvcResult result = mockMvc
-                .perform(post("/hello123")
+                .perform(post("/logic")
                         .contentType(APPLICATION_JSON)
-                        .content("{\"name\":\"John\"}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
                 .andReturn();
-        assertEquals("Hello World!", result.getResponse().getContentAsString());
+
+        assertEquals(objectMapper.writeValueAsString(incomingJson), result.getResponse().getContentAsString());
     }
 
 
