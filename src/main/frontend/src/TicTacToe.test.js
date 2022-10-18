@@ -31,7 +31,7 @@ test('check for board to be initially empty ', () => {
 });
 
 
-test('check if square 0 is updated on click.', async () => {
+test('check if square 0 is updated with X on click.', async () => {
     render(<App/>);
 
     server.use(
@@ -58,7 +58,7 @@ test('check if square 0 is updated on click.', async () => {
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
 });
 
-test('check if other squares are updated on first click.', async () => {
+test('check if other squares are updated with X on first click.', async () => {
     render(<App/>);
 
     server.use(
