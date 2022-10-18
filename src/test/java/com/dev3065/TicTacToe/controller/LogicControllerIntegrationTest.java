@@ -112,15 +112,6 @@ class LogicControllerIntegrationTest {
     void returnAWinnerWhenThereIsOne() throws Exception {
         IncomingJSON incomingJson = new IncomingJSON(List.of("-", "X", "X", "-", "O", "O", "-", "-", "-"), 0, "X");
 
-        mockMvc
-                .perform(post("/logic")
-                        .contentType(APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper
-                                .writeValueAsString(incomingJson)))
-                .andExpect(status().isBadRequest());
-
         MvcResult result = mockMvc
                 .perform(post("/logic")
                         .contentType(APPLICATION_JSON)
