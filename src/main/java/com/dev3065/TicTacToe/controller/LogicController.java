@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 import static org.slf4j.LoggerFactory.getLogger;
-
 
 @RestController
 public class LogicController {
@@ -21,6 +18,10 @@ public class LogicController {
 
     @PostMapping("/logic")
     public ResponseEntity<ResponseJSON> handler(@RequestBody IncomingJSON incomingJSON) {
+
+        if (!incomingJSON.getState().get(incomingJSON.getSquareClicked()).equals("-")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         ResponseJSON oneClickResponse = new ResponseJSON(incomingJSON.getState());
         oneClickResponse.setSquareClicked(incomingJSON.getSquareClicked(), incomingJSON.getTurn());

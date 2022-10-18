@@ -95,6 +95,7 @@ test('check if second click is an O', async () => {
 
             const {state, squareClicked, turn} = req.body;
 
+            //if board is empty, return with an X
             if (state.toString() === emptyBoard.toString()) {
                 let boardWithXClicked = state.slice();
                 boardWithXClicked[squareClicked] = turn;
@@ -105,6 +106,7 @@ test('check if second click is an O', async () => {
                 ));
             }
 
+            //if not an empty board return with an O
             if (state !== emptyBoard) {
                 let boardWith0Clicked = state.slice();
                 boardWith0Clicked[squareClicked] = turn;
@@ -117,12 +119,18 @@ test('check if second click is an O', async () => {
         })
     );
 
+    //first click
     const element = screen.getAllByRole("cell", {class: "square"})[0];
     userEvent.click(element);
+
+    //expect first click to be an X
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
 
+    //second click
     const secondElement = screen.getAllByRole("cell", {class: "square"})[3];
     userEvent.click(secondElement);
+
+    //expect second click to be an O
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[3].textContent).toBe("O"));
 });
 
@@ -132,7 +140,6 @@ test('check if whose turn is displayed (First move)', () => {
     const turnText = container.getElementsByClassName("to-play");
     expect(turnText[0].textContent).toBe("To play: X");
 });
-
 
 
 test('check if whose turn is displayed (Second move)', async () => {
@@ -161,4 +168,64 @@ test('check if whose turn is displayed (Second move)', async () => {
 
     const turnText = container.getElementsByClassName("to-play");
     expect(turnText[0].textContent).toBe("To play: O");
+});
+
+
+test('O plays on played position with X', async () => {
+    const {container} = render(<App/>);
+
+    console.log = jest.fn();
+    let emptyBoard = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+
+            const {state, squareClicked, turn} = req.body;
+
+            if (state.toString() === emptyBoard.toString()) {
+                let boardWithXClicked = state.slice();
+                boardWithXClicked[squareClicked] = turn;
+                return res(ctx.json(
+                    {
+                        state: boardWithXClicked
+                    }
+                ));
+            }
+
+            return res(
+                ctx.status(400),
+                ctx.json(
+                    {
+                        state: ["X", "-", "-", "-", "-", "-", "-", "-", "-"],
+                        error: "Square already played"
+                    }
+                ));
+        })
+    );
+
+    //first click on same square
+    let element = screen.getAllByRole("cell", {class: "square"})[0];
+    userEvent.click(element);
+
+    //wait for it to be X
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
+
+    //refetch the square after rendering
+    element = screen.getAllByRole("cell", {class: "square"})[0];
+
+    //second click on same square
+    userEvent.click(element);
+
+    //error should be logged
+    await waitFor(() => expect(console.log).toHaveBeenCalledWith("Square already played"));
+
+    //square should still be X
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
+
+    //turn should still be O
+    const turnText = container.getElementsByClassName("to-play");
+    expect(turnText[0].textContent).toBe("To play: O");
+
+
+
 });
