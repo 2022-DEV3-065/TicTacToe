@@ -1,6 +1,7 @@
 package com.dev3065.TicTacToe.controller;
 
 import com.dev3065.TicTacToe.domain.IncomingJSON;
+import com.dev3065.TicTacToe.domain.ResponseJSON;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,9 @@ public class LogicController {
     private static final Logger LOGGER = getLogger(LogicController.class);
 
     @PostMapping("/logic")
-    public ResponseEntity<IncomingJSON> logic(@RequestBody IncomingJSON body) {
+    public ResponseEntity<ResponseJSON> logic(@RequestBody IncomingJSON body) {
 
-        IncomingJSON oneClickResponse = new IncomingJSON(List.of("X","-","-","-","-","-","-","-","-"));
+        ResponseJSON oneClickResponse = new ResponseJSON(List.of("X","-","-","-","-","-","-","-","-"));
 
         return new ResponseEntity<>(oneClickResponse, HttpStatus.OK);
     }
