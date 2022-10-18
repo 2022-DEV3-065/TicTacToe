@@ -123,7 +123,7 @@ test('check if second click is an O', async () => {
 
     const secondElement = screen.getAllByRole("cell", {class: "square"})[3];
     userEvent.click(secondElement);
-    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[3].textContent).toBe("0"));
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[3].textContent).toBe("O"));
 });
 
 
