@@ -137,8 +137,13 @@ test('check if second click is an O', async () => {
 test('check if whose turn is displayed (First move)', () => {
     const {container} = render(<App/>);
 
+    //check if X turn is displayed
     const turnText = container.getElementsByClassName("to-play");
     expect(turnText[0].textContent).toBe("To play: X");
+
+    //no winner yet
+    const winner = container.getElementsByClassName('winner');
+    expect(winner.length).toBe(0);
 });
 
 
@@ -166,8 +171,14 @@ test('check if whose turn is displayed (Second move)', async () => {
     userEvent.click(element);
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[3].textContent).toBe("X"));
 
+    //check if turn is displayed as O
     const turnText = container.getElementsByClassName("to-play");
     expect(turnText[0].textContent).toBe("To play: O");
+
+    //no winner yet
+    const winner = container.getElementsByClassName('winner');
+    expect(winner.length).toBe(0);
+
 });
 
 
@@ -226,10 +237,6 @@ test('O plays on played position with X', async () => {
     const turnText = container.getElementsByClassName("to-play");
     expect(turnText[0].textContent).toBe("To play: O");
 
-    //no winner yet
-    const winnerText = container.getElementsByClassName("winner");
-    expect(winnerText[0].textContent).toBe("Winner: ");
-
 });
 
 
@@ -256,8 +263,18 @@ test('check when X is a winner', async () => {
 
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
 
+    //winner should be X
     const winnerText = container.getElementsByClassName("winner");
     expect(winnerText[0].textContent).toBe("Winner: X");
+
+    //turn should not be displayed
+    const toPlay = container.getElementsByClassName('to-play');
+    expect(toPlay.length).toBe(0);
+
+    //reset button should be present
+    const reset = container.getElementsByClassName('reset');
+    expect(reset.length).toBe(1);
+
 });
 
 
@@ -284,8 +301,17 @@ test('check when O is a winner', async () => {
 
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("O"));
 
+    //winner should be O
     const winnerText = container.getElementsByClassName("winner");
     expect(winnerText[0].textContent).toBe("Winner: O");
+
+    //turn should not be displayed
+    const toPlay = container.getElementsByClassName('to-play');
+    expect(toPlay.length).toBe(0);
+
+    //reset button should be present
+    const reset = container.getElementsByClassName('reset');
+    expect(reset.length).toBe(1);
 });
 
 
@@ -312,10 +338,18 @@ test('check for a draw', async () => {
 
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("O"));
 
+    //check for draw text
     const winnerText = container.getElementsByClassName("winner");
-    expect(winnerText[0].textContent).toBe("DRAW");
-});
+    expect(winnerText[0].textContent).toBe("Draw");
 
+    //turn should not be displayed
+    const toPlay = container.getElementsByClassName('to-play');
+    expect(toPlay.length).toBe(0);
+
+    //reset button should be present
+    const reset = container.getElementsByClassName('reset');
+    expect(reset.length).toBe(1);
+});
 
 
 test('check for board being unlickable when there is a draw', async () => {
@@ -350,6 +384,14 @@ test('check for board being unlickable when there is a draw', async () => {
 
     //game over message should be logged
     await waitFor(() => expect(console.log).toHaveBeenCalledWith("Game over"));
+
+    //turn should not be displayed
+    const toPlay = container.getElementsByClassName('to-play');
+    expect(toPlay.length).toBe(0);
+
+    //reset button should be present
+    const reset = container.getElementsByClassName('reset');
+    expect(reset.length).toBe(1);
 });
 
 
@@ -385,4 +427,54 @@ test('check for board being unlickable when there is a winner', async () => {
 
     //game over message should be logged
     await waitFor(() => expect(console.log).toHaveBeenCalledWith("Game over"));
+
+    //turn should not be displayed
+    const toPlay = container.getElementsByClassName('to-play');
+    expect(toPlay.length).toBe(0);
+
+    //reset button should be present
+    const reset = container.getElementsByClassName('reset');
+    expect(reset.length).toBe(1);
+});
+
+test('reset board', async () => {
+    const {container} = render(<App/>);
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+            return res(ctx.json(
+                {
+                    state: [
+                        "X", "-", "O",
+                        "O", "X", "-",
+                        "O", "-", "X"
+                    ],
+                    winner: "X"
+                }
+            ));
+        })
+    );
+
+    const element = screen.getAllByRole("cell", {class: "square"})[0];
+    userEvent.click(element);
+
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
+
+    const winnerText = container.getElementsByClassName("winner");
+    expect(winnerText[0].textContent).toBe("Winner: X");
+
+    //click on reset button
+    userEvent.click(screen.getByRole("button", {class: "reset"}));
+
+    //board should be empty
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("-"));
+
+    //turn should be X
+    const turnText = container.getElementsByClassName("to-play");
+    expect(turnText[0].textContent).toBe("To play: X");
+
+    //no winner yet
+    const winner = container.getElementsByClassName('winner');
+    expect(winner.length).toBe(0);
+
 });

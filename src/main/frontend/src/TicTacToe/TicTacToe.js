@@ -7,6 +7,11 @@ const TicTacToe = () => {
     const [turn, setTurn] = React.useState('X');
     const [winner, setWinner] = React.useState("NONE");
 
+    function resetBoard() {
+        setSquares(Array(9).fill('-'));
+        setTurn('X');
+        setWinner("NONE");
+    }
     const handleClick = async (squareClicked) => {
 
         if (winner === "NONE") {
@@ -76,8 +81,10 @@ const TicTacToe = () => {
             {winner != "X" && winner != "O" && winner != "DRAW" && <div className="to-play">To play: {turn}</div>}
 
             {/*Winner or draw*/}
-            {winner != "NONE" && winner != "DRAW" && <div className="winner">Winner: {winner}</div>}
+            {winner != "NONE" && winner != "DRAW" && <div className="winner">Winner: {winner}</div> }
             {winner == "DRAW" && <div className="winner">Draw</div>}
+            {winner != "NONE" && <div className="reset"><button onClick={resetBoard}>Reset</button></div>}
+
 
         </div>
     );
