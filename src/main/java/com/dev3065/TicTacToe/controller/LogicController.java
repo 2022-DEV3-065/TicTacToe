@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestController;xx
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class LogicController {
     @PostMapping("/logic")
     public ResponseEntity<ResponseJSON> handler(@RequestBody IncomingJSON incomingJSON) {
 
-        if (incomingJSON.getState().get(incomingJSON.getSquareClicked()) != "-") {
+        if (!incomingJSON.getState().get(incomingJSON.getSquareClicked()).equals("-")) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
