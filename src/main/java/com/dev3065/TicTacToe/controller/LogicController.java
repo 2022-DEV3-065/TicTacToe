@@ -23,7 +23,7 @@ public class LogicController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        ResponseJSON oneClickResponse = new ResponseJSON(incomingJSON.getState());
+        ResponseJSON oneClickResponse = new ResponseJSON(incomingJSON.getState(), null);
         oneClickResponse.setSquareClicked(incomingJSON.getSquareClicked(), incomingJSON.getTurn());
 
         return new ResponseEntity<>(oneClickResponse, HttpStatus.OK);
