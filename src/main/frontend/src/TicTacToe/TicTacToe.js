@@ -78,12 +78,12 @@ const TicTacToe = () => {
             </table>
 
             {/*No winners or draw yet*/}
-            {winner != "X" && winner != "O" && winner != "DRAW" && <div className="to-play">To play: {turn}</div>}
+            {winner !== "X" && winner !== "O" && winner !== "DRAW" && <div className="to-play">To play: {turn}</div>}
 
             {/*Winner or draw*/}
-            {winner != "NONE" && winner != "DRAW" && <div className="winner">Winner: {winner}</div> }
-            {winner == "DRAW" && <div className="winner">Draw</div>}
-            {winner != "NONE" && <div className="reset"><button onClick={resetBoard}>Reset</button></div>}
+            {winner !== "NONE" && winner !== "DRAW" && <div className="winner">Winner: {winner}</div> }
+            {winner === "DRAW" && <div className="winner">Draw</div>}
+            {winner !== "NONE" && <div className="reset"><button onClick={resetBoard}>Reset</button></div>}
 
 
         </div>
