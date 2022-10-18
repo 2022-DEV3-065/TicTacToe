@@ -22,9 +22,9 @@ public class LogicController {
     @PostMapping("/logic")
     public ResponseEntity<ResponseJSON> handler(@RequestBody IncomingJSON incomingJSON) {
 
-        Integer squareCliked = incomingJSON.getSquareClicked();
+        Integer squareClicked = incomingJSON.getSquareClicked();
         ResponseJSON oneClickResponse = new ResponseJSON(incomingJSON.getState());
-        oneClickResponse.setSquareClicked(squareCliked);
+        oneClickResponse.setSquareClicked(squareClicked);
 
         return new ResponseEntity<>(oneClickResponse, HttpStatus.OK);
     }
