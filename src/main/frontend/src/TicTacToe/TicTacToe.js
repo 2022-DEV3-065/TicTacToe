@@ -1,6 +1,5 @@
-import React, {errors} from "react";
+import React from "react";
 import './TicTacToe.css';
-import {response} from "msw";
 
 const TicTacToe = () => {
 
