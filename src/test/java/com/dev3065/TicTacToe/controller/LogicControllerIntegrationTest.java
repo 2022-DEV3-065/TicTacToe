@@ -1,5 +1,7 @@
 package com.dev3065.TicTacToe.controller;
 
+import com.dev3065.TicTacToe.domain.IncomingJSON;
+import com.dev3065.TicTacToe.domain.ResponseJSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +39,7 @@ class LogicControllerIntegrationTest {
 
     @Test
     void receivesBoardState() throws Exception {
-        IncomingJson incomingJson = new IncomingJson(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"));
+        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"), 0);
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -48,7 +50,25 @@ class LogicControllerIntegrationTest {
                                 .writeValueAsString(incomingJson)))
                 .andReturn();
 
-        IncomingJson expectedResponse = new IncomingJson(List.of("X", "-", "-", "-", "-", "-", "-", "-", "-"));
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("X", "-", "-", "-", "-", "-", "-", "-", "-"));
+
+        assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
+    }
+
+    @Test
+    void handleClickOnAnyOtherSquareThanTheFirst() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"), 1);
+
+        MvcResult result = mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andReturn();
+
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("-", "X", "-", "-", "-", "-", "-", "-", "-"));
 
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }

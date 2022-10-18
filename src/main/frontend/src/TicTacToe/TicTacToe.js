@@ -5,14 +5,14 @@ const TicTacToe = () => {
 
     const [squares, setSquares] = React.useState(Array(9).fill('-'));
 
-    const handleClick = async (num) => {
+    const handleClick = async (squareClicked) => {
 
         const state = squares.slice();
 
         await fetch('/logic', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({state})
+            body: JSON.stringify({state, squareClicked})
         })
             .then((response) => {
                 if (response.status === 200) {
