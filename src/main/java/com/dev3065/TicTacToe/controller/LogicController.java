@@ -22,6 +22,10 @@ public class LogicController {
     @PostMapping("/logic")
     public ResponseEntity<ResponseJSON> handler(@RequestBody IncomingJSON incomingJSON) {
 
+        if (incomingJSON.getState().get(incomingJSON.getSquareClicked()) != "-") {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         ResponseJSON oneClickResponse = new ResponseJSON(incomingJSON.getState());
         oneClickResponse.setSquareClicked(incomingJSON.getSquareClicked(), incomingJSON.getTurn());
 
