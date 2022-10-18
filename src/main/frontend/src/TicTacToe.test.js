@@ -226,6 +226,32 @@ test('O plays on played position with X', async () => {
     const turnText = container.getElementsByClassName("to-play");
     expect(turnText[0].textContent).toBe("To play: O");
 
+});
 
 
+test('check when there is a winner', async () => {
+    const {container} = render(<App/>);
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+            return res(ctx.json(
+                {
+                    state: [
+                        "X", "-", "O",
+                        "O", "X", "-",
+                        "O", "-", "X"
+                    ],
+                    winner: "X"
+                }
+            ));
+        })
+    );
+
+    const element = screen.getAllByRole("cell", {class: "square"})[0];
+    userEvent.click(element);
+
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
+
+    const winnerText = container.getElementsByClassName("winner");
+    expect(winnerText[0].textContent).toBe("Winner: X");
 });
