@@ -315,3 +315,74 @@ test('check for a draw', async () => {
     const winnerText = container.getElementsByClassName("winner");
     expect(winnerText[0].textContent).toBe("DRAW");
 });
+
+
+
+test('check for board being unlickable when there is a draw', async () => {
+    const {container} = render(<App/>);
+    console.log = jest.fn();
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+            return res(ctx.json(
+                {
+                    state: [
+                        "O", "O", "X",
+                        "X", "X", "O",
+                        "O", "X", "X"
+                    ],
+                    winner: "DRAW"
+                }
+            ));
+        })
+    );
+
+    const element = screen.getAllByRole("cell", {class: "square"})[0];
+    userEvent.click(element);
+
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("O"));
+
+    const winnerText = container.getElementsByClassName("winner");
+    expect(winnerText[0].textContent).toBe("Draw");
+
+    //click on a square
+    userEvent.click(screen.getAllByRole("cell", {class: "square"})[1]);
+
+    //game over message should be logged
+    await waitFor(() => expect(console.log).toHaveBeenCalledWith("Game over"));
+});
+
+
+test('check for board being unlickable when there is a winner', async () => {
+    const {container} = render(<App/>);
+    console.log = jest.fn();
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+            return res(ctx.json(
+                {
+                    state: [
+                        "X", "O", "-",
+                        "O", "X", "O",
+                        "-", "-", "X"
+                    ],
+                    winner: "X"
+                }
+            ));
+        })
+    );
+
+    const element = screen.getAllByRole("cell", {class: "square"})[0];
+    userEvent.click(element);
+
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
+
+    const winnerText = container.getElementsByClassName("winner");
+    expect(winnerText[0].textContent).toBe("Winner: X");
+
+    //click on a square
+    userEvent.click(screen.getAllByRole("cell", {class: "square"})[1]);
+
+    //game over message should be logged
+    await waitFor(() => expect(console.log).toHaveBeenCalledWith("Game over"));
+});

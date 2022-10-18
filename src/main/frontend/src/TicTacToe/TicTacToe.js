@@ -5,37 +5,41 @@ const TicTacToe = () => {
 
     const [squares, setSquares] = React.useState(Array(9).fill('-'));
     const [turn, setTurn] = React.useState('X');
-    const [winner, setWinner] = React.useState();
+    const [winner, setWinner] = React.useState("NONE");
 
     const handleClick = async (squareClicked) => {
 
-        const state = squares.slice();
+        if (winner === "NONE") {
+            const state = squares.slice();
 
-        await fetch('/logic', {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({state, squareClicked, turn})
-        })
-            .then((response) => {
-                if (response.status === 200) {
-                    return response.json()
-                }
-                if (response.status === 400) {
-                    return Promise.reject("Square already played");
-                }
+            await fetch('/logic', {
+                method: 'POST',
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({state, squareClicked, turn})
             })
-            .then((data) => {
-                setSquares(data.state);
-                setTurn(turn === 'X' ? 'O' : 'X');
+                .then((response) => {
+                    if (response.status === 200) {
+                        return response.json()
+                    }
+                    if (response.status === 400) {
+                        return Promise.reject("Square already played");
+                    }
+                })
+                .then((data) => {
+                    setSquares(data.state);
+                    setTurn(turn === 'X' ? 'O' : 'X');
 
-                if (data.winner) {
-                    setWinner(data.winner);
-                }
+                    if (data.winner) {
+                        setWinner(data.winner);
+                    }
 
-            }).catch((error) => {
-                console.log(error)
-            });
-
+                }).catch((error) => {
+                    console.log(error)
+                });
+        }
+        else {
+            console.log("Game over");
+        }
     }
 
     const Square = ({num}) => {
@@ -69,11 +73,11 @@ const TicTacToe = () => {
             </table>
 
             {/*No winners or draw yet*/}
-            { winner!="X" &&  winner!="O" && winner!="DRAW" && <div className="to-play">To play: {turn}</div>}
+            {winner != "X" && winner != "O" && winner != "DRAW" && <div className="to-play">To play: {turn}</div>}
 
             {/*Winner or draw*/}
-            { winner!="NONE" && winner!="DRAW" && winner && <div className="winner">Winner: {winner}</div>}
-            { winner=="DRAW" && <div className="winner">Draw</div>}
+            {winner != "NONE" && winner != "DRAW" && <div className="winner">Winner: {winner}</div>}
+            {winner == "DRAW" && <div className="winner">Draw</div>}
 
         </div>
     );
