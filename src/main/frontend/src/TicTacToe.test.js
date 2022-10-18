@@ -1,17 +1,21 @@
-import {render, screen} from '@testing-library/react';
+import {render, screen, waitFor} from '@testing-library/react';
 import App from './App';
+import {setupServer} from 'msw/node';
+import {rest} from 'msw';
+import userEvent from "@testing-library/user-event";
+
+
+const server = setupServer();
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
 
 test('check for board to be present', () => {
     render(<App/>);
 
     const board = screen.getByRole("table", {class: "board"});
-
-    expect(board.getElementsByClassName("row").length).toBe(3);
-
-    Array.from(board.getElementsByClassName("row")).forEach((row) => {
-        expect(row.getElementsByClassName("square").length).toBe(3);
-    });
-
+    expect(board.getElementsByClassName("square").length).toBe(9);
     expect(board).toBeInTheDocument();
 
 });
@@ -25,4 +29,28 @@ test('check for board to be initially empty ', () => {
         expect(square.textContent).toBe("-");
     });
 });
+
+
+test('check if square is updated on click.', async () => {
+    render(<App/>);
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+            return res(ctx.json(
+                {
+                    state: [
+                        "X", "-", "-",
+                        "-", "-", "-",
+                        "-", "-", "-"
+                    ]
+                }
+            ));
+        })
+    );
+
+    const element = screen.getAllByRole("cell", {class: "square"})[0];
+    userEvent.click(element);
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
+});
+
 
