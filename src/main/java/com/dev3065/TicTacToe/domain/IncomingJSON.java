@@ -6,6 +6,14 @@ public class IncomingJSON {
 
     private List<String> state;
 
+    public IncomingJSON() {
+    }
+
+    public IncomingJSON(List<String> state) {
+        this.state = state;
+    }
+
+
     public List<String> getState() {
         return state;
     }

@@ -21,8 +21,7 @@ public class LogicController {
     @PostMapping("/logic")
     public ResponseEntity<IncomingJSON> logic(@RequestBody IncomingJSON body) {
 
-        IncomingJSON oneClickResponse = new IncomingJSON();
-        oneClickResponse.setState(List.of("X","-","-","-","-","-","-","-","-"));
+        IncomingJSON oneClickResponse = new IncomingJSON(List.of("X","-","-","-","-","-","-","-","-"));
 
         return new ResponseEntity<>(oneClickResponse, HttpStatus.OK);
     }

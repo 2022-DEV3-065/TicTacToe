@@ -1,5 +1,6 @@
 package com.dev3065.TicTacToe.controller;
 
+import com.dev3065.TicTacToe.domain.IncomingJSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +38,7 @@ class LogicControllerIntegrationTest {
 
     @Test
     void receivesBoardState() throws Exception {
-        IncomingJson incomingJson = new IncomingJson(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"));
+        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"));
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -48,7 +49,7 @@ class LogicControllerIntegrationTest {
                                 .writeValueAsString(incomingJson)))
                 .andReturn();
 
-        IncomingJson expectedResponse = new IncomingJson(List.of("X", "-", "-", "-", "-", "-", "-", "-", "-"));
+        IncomingJSON expectedResponse = new IncomingJSON(List.of("X", "-", "-", "-", "-", "-", "-", "-", "-"));
 
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }
