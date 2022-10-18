@@ -1,5 +1,6 @@
-import React from "react";
+import React, {errors} from "react";
 import './TicTacToe.css';
+import {response} from "msw";
 
 const TicTacToe = () => {
 
@@ -19,12 +20,17 @@ const TicTacToe = () => {
                 if (response.status === 200) {
                     return response.json()
                 }
+                if (response.status === 400) {
+                    return Promise.reject("Square already played");
+                }
             })
             .then((data) => {
                 setSquares(data.state);
-            });
-
-        setTurn(turn === 'X' ? 'O' : 'X');
+                setTurn(turn === 'X' ? 'O' : 'X');
+            }).catch((error) => {
+                console.log(error)
+            })
+        ;
 
     }
 
