@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(LogicController.class)
 @ExtendWith(SpringExtension.class)
@@ -89,6 +90,22 @@ class LogicControllerIntegrationTest {
         ResponseJSON expectedResponse = new ResponseJSON(List.of("O", "X", "-", "-", "-", "-", "-", "-", "-"));
 
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
+    }
+
+
+    @Test
+    void throwErrorWhenPlayerPlaysOnOccupiedSquare() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "X", "-", "-", "-", "-", "-", "-", "-"), 1, "O");
+
+        mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andExpect(status().isBadRequest());
+
     }
 
 }
