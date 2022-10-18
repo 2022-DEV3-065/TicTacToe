@@ -31,8 +31,20 @@ public class LogicController {
         if (winCondition(responseJSON.getState())) {
             responseJSON.setWinner(incomingJSON.getTurn());
         }
+        else if (drawCondition(responseJSON.getState())) {
+            responseJSON.setWinner("DRAW");
+        }
 
         return new ResponseEntity<>(responseJSON, HttpStatus.OK);
+    }
+
+    private boolean drawCondition(List<String> state) {
+        for (String s : state) {
+            if (s.equals("-")) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean winCondition(List<String> state) {

@@ -162,4 +162,22 @@ class LogicControllerIntegrationTest {
 
     }
 
+    @Test
+    void draw() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of("X", "O", "X", "O", "X", "X", "O", "-", "O"), 7, "X");
+
+        MvcResult result = mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andReturn();
+
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("X", "O", "X", "O", "X", "X", "O", "X", "O"), "DRAW");
+        assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
+
+    }
+
 }
