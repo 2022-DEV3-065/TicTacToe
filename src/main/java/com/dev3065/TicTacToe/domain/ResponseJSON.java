@@ -21,7 +21,7 @@ public class ResponseJSON {
         this.state = state;
     }
 
-    public void setSquareClicked(Integer squareClicked) {
-        state.set(squareClicked, "X");
+    public void setSquareClicked(Integer squareClicked, String turn) {
+        state.set(squareClicked, turn);
     }
 }

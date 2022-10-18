@@ -39,7 +39,7 @@ class LogicControllerIntegrationTest {
 
     @Test
     void receivesBoardState() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"), 0);
+        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"), 0, "X");
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -57,7 +57,7 @@ class LogicControllerIntegrationTest {
 
     @Test
     void handleClickOnAnyOtherSquareThanTheFirst() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"), 1);
+        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"), 1, "X");
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -73,5 +73,22 @@ class LogicControllerIntegrationTest {
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }
 
+    @Test
+    void updateSquareAccordingToTurn() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "X", "-", "-", "-", "-", "-", "-", "-"), 0, "O");
+
+        MvcResult result = mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andReturn();
+
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("O", "X", "-", "-", "-", "-", "-", "-", "-"));
+
+        assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
+    }
 
 }
