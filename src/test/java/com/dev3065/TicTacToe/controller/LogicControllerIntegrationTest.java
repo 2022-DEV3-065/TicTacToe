@@ -37,7 +37,7 @@ class LogicControllerIntegrationTest {
 
     @Test
     void receivesBoardState() throws Exception {
-        IncomingJson incomingJson = new IncomingJson(List.of("X", "O", "X", "O", "X", "O", "X", "O", "X"));
+        IncomingJson incomingJson = new IncomingJson(List.of("-", "-", "-", "-", "-", "-", "-", "-", "-"));
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -48,7 +48,9 @@ class LogicControllerIntegrationTest {
                                 .writeValueAsString(incomingJson)))
                 .andReturn();
 
-        assertEquals(objectMapper.writeValueAsString(incomingJson), result.getResponse().getContentAsString());
+        IncomingJson expectedResponse = new IncomingJson(List.of("X", "-", "-", "-", "-", "-", "-", "-", "-"));
+
+        assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }
 
 

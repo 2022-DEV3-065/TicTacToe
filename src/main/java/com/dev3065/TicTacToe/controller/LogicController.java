@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import static org.slf4j.LoggerFactory.getLogger;
 
 
@@ -18,6 +20,11 @@ public class LogicController {
 
     @PostMapping("/logic")
     public ResponseEntity<IncomingJSON> logic(@RequestBody IncomingJSON body) {
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        LOGGER.warn("Received: " + body.getState());
+
+        IncomingJSON oneClickResponse = new IncomingJSON();
+        oneClickResponse.setState(List.of("X","-","-","-","-","-","-","-","-"));
+
+        return new ResponseEntity<>(oneClickResponse, HttpStatus.OK);
     }
 }
