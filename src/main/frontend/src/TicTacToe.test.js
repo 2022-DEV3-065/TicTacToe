@@ -31,26 +31,58 @@ test('check for board to be initially empty ', () => {
 });
 
 
-test('check if square is updated on click.', async () => {
+test('check if square 0 is updated on click.', async () => {
     render(<App/>);
 
     server.use(
         rest.post('/logic', (req, res, ctx) => {
-            return res(ctx.json(
-                {
-                    state: [
-                        "X", "-", "-",
-                        "-", "-", "-",
-                        "-", "-", "-"
-                    ]
-                }
-            ));
+
+            const {state, squareClicked} = req.body;
+
+            if (squareClicked === 0) {
+                return res(ctx.json(
+                    {
+                        state: [
+                            "X", "-", "-",
+                            "-", "-", "-",
+                            "-", "-", "-"
+                        ]
+                    }
+                ));
+            }
         })
     );
 
     const element = screen.getAllByRole("cell", {class: "square"})[0];
     userEvent.click(element);
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
+});
+
+test('check if other squares are updated on click.', async () => {
+    render(<App/>);
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+
+            const {state, squareClicked} = req.body;
+
+            if (squareClicked === 3) {
+                return res(ctx.json(
+                    {
+                        state: [
+                            "-", "-", "-",
+                            "X", "-", "-",
+                            "-", "-", "-"
+                        ]
+                    }
+                ));
+            }
+        })
+    );
+
+    const element = screen.getAllByRole("cell", {class: "square"})[3];
+    userEvent.click(element);
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[3].textContent).toBe("X"));
 });
 
 
