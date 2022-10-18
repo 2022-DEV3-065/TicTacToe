@@ -5,6 +5,7 @@ const TicTacToe = () => {
 
     const [squares, setSquares] = React.useState(Array(9).fill('-'));
     const [turn, setTurn] = React.useState('X');
+    const [winner, setWinner] = React.useState();
 
     const handleClick = async (squareClicked) => {
 
@@ -26,10 +27,14 @@ const TicTacToe = () => {
             .then((data) => {
                 setSquares(data.state);
                 setTurn(turn === 'X' ? 'O' : 'X');
+
+                if (data.winner) {
+                    setWinner(data.winner);
+                }
+
             }).catch((error) => {
                 console.log(error)
-            })
-        ;
+            });
 
     }
 
@@ -64,6 +69,7 @@ const TicTacToe = () => {
             </table>
 
             <div className="to-play">To play: {turn}</div>
+            <div className="winner">Winner: {winner}</div>
 
         </div>
     );

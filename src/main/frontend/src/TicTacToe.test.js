@@ -226,6 +226,64 @@ test('O plays on played position with X', async () => {
     const turnText = container.getElementsByClassName("to-play");
     expect(turnText[0].textContent).toBe("To play: O");
 
+    //no winner yet
+    const winnerText = container.getElementsByClassName("winner");
+    expect(winnerText[0].textContent).toBe("Winner: ");
+
+});
 
 
+test('check when X is a winner', async () => {
+    const {container} = render(<App/>);
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+            return res(ctx.json(
+                {
+                    state: [
+                        "X", "-", "O",
+                        "O", "X", "-",
+                        "O", "-", "X"
+                    ],
+                    winner: "X"
+                }
+            ));
+        })
+    );
+
+    const element = screen.getAllByRole("cell", {class: "square"})[0];
+    userEvent.click(element);
+
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
+
+    const winnerText = container.getElementsByClassName("winner");
+    expect(winnerText[0].textContent).toBe("Winner: X");
+});
+
+
+test('check when O is a winner', async () => {
+    const {container} = render(<App/>);
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+            return res(ctx.json(
+                {
+                    state: [
+                        "O", "-", "X",
+                        "O", "X", "-",
+                        "O", "-", "X"
+                    ],
+                    winner: "O"
+                }
+            ));
+        })
+    );
+
+    const element = screen.getAllByRole("cell", {class: "square"})[0];
+    userEvent.click(element);
+
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("O"));
+
+    const winnerText = container.getElementsByClassName("winner");
+    expect(winnerText[0].textContent).toBe("Winner: O");
 });

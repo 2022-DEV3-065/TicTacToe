@@ -51,7 +51,7 @@ class LogicControllerIntegrationTest {
                                 .writeValueAsString(incomingJson)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of("X", "-", "-", "-", "-", "-", "-", "-", "-"));
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("X", "-", "-", "-", "-", "-", "-", "-", "-"), "NONE");
 
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }
@@ -69,7 +69,7 @@ class LogicControllerIntegrationTest {
                                 .writeValueAsString(incomingJson)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of("-", "X", "-", "-", "-", "-", "-", "-", "-"));
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("-", "X", "-", "-", "-", "-", "-", "-", "-"),"NONE");
 
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }
@@ -87,7 +87,7 @@ class LogicControllerIntegrationTest {
                                 .writeValueAsString(incomingJson)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of("O", "X", "-", "-", "-", "-", "-", "-", "-"));
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("O", "X", "-", "-", "-", "-", "-", "-", "-"), "NONE");
 
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }
@@ -105,6 +105,78 @@ class LogicControllerIntegrationTest {
                         .content(objectMapper
                                 .writeValueAsString(incomingJson)))
                 .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    void winnerPresent_InARow() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "X", "X", "-", "O", "O", "-", "-", "-"), 0, "X");
+
+        MvcResult result = mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andReturn();
+
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("X", "X", "X", "-", "O", "O", "-", "-", "-"), "X");
+        assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void winnerPresent_InAColumn() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of("-", "X", "-", "X", "-", "O", "-", "X", "O"), 2, "O");
+
+        MvcResult result = mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andReturn();
+
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("-", "X", "O", "X", "-", "O", "-", "X", "O"), "O");
+        assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void winnerPresent_InADiagonal() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of("X", "X", "-", "-", "X", "O", "O", "O", "-"), 8, "X");
+
+        MvcResult result = mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andReturn();
+
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("X", "X", "-", "-", "X", "O", "O", "O", "X"), "X");
+        assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void draw() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of("X", "O", "X", "O", "X", "X", "O", "-", "O"), 7, "X");
+
+        MvcResult result = mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andReturn();
+
+        ResponseJSON expectedResponse = new ResponseJSON(List.of("X", "O", "X", "O", "X", "X", "O", "X", "O"), "DRAW");
+        assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
 
     }
 
