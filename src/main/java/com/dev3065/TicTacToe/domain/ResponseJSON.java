@@ -20,4 +20,8 @@ public class ResponseJSON {
     public void setState(List<String> state) {
         this.state = state;
     }
+
+    public void setSquareClicked(Integer squareClicked) {
+        state.set(squareClicked, "X");
+    }
 }

@@ -20,9 +20,11 @@ public class LogicController {
     private static final Logger LOGGER = getLogger(LogicController.class);
 
     @PostMapping("/logic")
-    public ResponseEntity<ResponseJSON> logic(@RequestBody IncomingJSON body) {
+    public ResponseEntity<ResponseJSON> handler(@RequestBody IncomingJSON incomingJSON) {
 
-        ResponseJSON oneClickResponse = new ResponseJSON(List.of("X","-","-","-","-","-","-","-","-"));
+        Integer squareCliked = incomingJSON.getSquareClicked();
+        ResponseJSON oneClickResponse = new ResponseJSON(incomingJSON.getState());
+        oneClickResponse.setSquareClicked(squareCliked);
 
         return new ResponseEntity<>(oneClickResponse, HttpStatus.OK);
     }

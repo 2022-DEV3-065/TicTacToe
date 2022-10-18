@@ -20,6 +20,10 @@ public class IncomingJSON {
         return state;
     }
 
+    public Integer getSquareClicked() {
+        return squareClicked;
+    }
+
     public void setState(List<String> state) {
         this.state = state;
     }
