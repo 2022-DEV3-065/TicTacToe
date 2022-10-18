@@ -68,8 +68,12 @@ const TicTacToe = () => {
                 </tbody>
             </table>
 
-            <div className="to-play">To play: {turn}</div>
-            <div className="winner">Winner: {winner}</div>
+            {/*No winners or draw yet*/}
+            { winner!="X" &&  winner!="O" && winner!="DRAW" && <div className="to-play">To play: {turn}</div>}
+
+            {/*Winner or draw*/}
+            { winner!="NONE" && winner!="DRAW" && winner && <div className="winner">Winner: {winner}</div>}
+            { winner=="DRAW" && <div className="winner">Draw</div>}
 
         </div>
     );
