@@ -7,10 +7,7 @@ const TicTacToe = () => {
 
     const handleClick = async (num) => {
 
-        console.log(squares);
-
         const state = squares.slice();
-        const json = {state};
 
         await fetch('/logic', {
             method: 'POST',
@@ -23,11 +20,8 @@ const TicTacToe = () => {
                 }
             })
             .then((data) => {
-                console.log(data);
                 setSquares(data.state);
             });
-
-        console.log(squares);
 
     }
 

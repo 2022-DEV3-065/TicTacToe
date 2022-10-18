@@ -20,7 +20,6 @@ public class LogicController {
 
     @PostMapping("/logic")
     public ResponseEntity<IncomingJSON> logic(@RequestBody IncomingJSON body) {
-        LOGGER.warn("Received: " + body.getState());
 
         IncomingJSON oneClickResponse = new IncomingJSON();
         oneClickResponse.setState(List.of("X","-","-","-","-","-","-","-","-"));
