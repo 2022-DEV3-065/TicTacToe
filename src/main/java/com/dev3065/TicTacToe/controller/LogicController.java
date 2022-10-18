@@ -22,9 +22,8 @@ public class LogicController {
     @PostMapping("/logic")
     public ResponseEntity<ResponseJSON> handler(@RequestBody IncomingJSON incomingJSON) {
 
-        Integer squareCliked = incomingJSON.getSquareClicked();
         ResponseJSON oneClickResponse = new ResponseJSON(incomingJSON.getState());
-        oneClickResponse.setSquareClicked(squareCliked);
+        oneClickResponse.setSquareClicked(incomingJSON.getSquareClicked(), incomingJSON.getTurn());
 
         return new ResponseEntity<>(oneClickResponse, HttpStatus.OK);
     }

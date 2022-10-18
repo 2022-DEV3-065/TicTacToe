@@ -4,6 +4,7 @@ import './TicTacToe.css';
 const TicTacToe = () => {
 
     const [squares, setSquares] = React.useState(Array(9).fill('-'));
+    const [turn, setTurn] = React.useState('X');
 
     const handleClick = async (squareClicked) => {
 
@@ -12,7 +13,7 @@ const TicTacToe = () => {
         await fetch('/logic', {
             method: 'POST',
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({state, squareClicked})
+            body: JSON.stringify({state, squareClicked, turn})
         })
             .then((response) => {
                 if (response.status === 200) {
@@ -22,6 +23,8 @@ const TicTacToe = () => {
             .then((data) => {
                 setSquares(data.state);
             });
+
+        setTurn(turn === 'X' ? 'O' : 'X');
 
     }
 
@@ -54,6 +57,9 @@ const TicTacToe = () => {
 
                 </tbody>
             </table>
+
+            <div className="to-play">To play: {turn}</div>
+
         </div>
     );
 
