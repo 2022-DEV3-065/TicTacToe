@@ -57,6 +57,9 @@ const TicTacToe = () => {
 
                 </tbody>
             </table>
+
+            <div className="to-play">To play: {turn}</div>
+
         </div>
     );
 

@@ -126,4 +126,39 @@ test('check if second click is an O', async () => {
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[3].textContent).toBe("O"));
 });
 
+test('check if whose turn is displayed (First move)', () => {
+    const {container} = render(<App/>);
 
+    const turnText = container.getElementsByClassName("to-play");
+    expect(turnText[0].textContent).toBe("To play: X");
+});
+
+
+
+test('check if whose turn is displayed (Second move)', async () => {
+    const {container} = render(<App/>);
+    let emptyBoard = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
+
+    server.use(
+        rest.post('/logic', (req, res, ctx) => {
+            const {state, squareClicked, turn} = req.body;
+
+            if (state.toString() === emptyBoard.toString()) {
+                let boardWithXClicked = state.slice();
+                boardWithXClicked[squareClicked] = turn;
+                return res(ctx.json(
+                    {
+                        state: boardWithXClicked
+                    }
+                ));
+            }
+        })
+    );
+
+    const element = screen.getAllByRole("cell", {class: "square"})[3];
+    userEvent.click(element);
+    await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[3].textContent).toBe("X"));
+
+    const turnText = container.getElementsByClassName("to-play");
+    expect(turnText[0].textContent).toBe("To play: O");
+});
