@@ -41,8 +41,7 @@ const TicTacToe = () => {
                 }).catch((error) => {
                     console.log(error)
                 });
-        }
-        else {
+        } else {
             console.log("Game over");
         }
     }
@@ -54,39 +53,52 @@ const TicTacToe = () => {
     }
 
     return (
-        <div>
-            <table className="board">
-                <tbody>
-                <tr>
-                    <Square num={0}/>
-                    <Square num={1}/>
-                    <Square num={2}/>
-                </tr>
-                <tr>
-                    <Square num={3}/>
-                    <Square num={4}/>
-                    <Square num={5}/>
-                </tr>
+        <div className="game">
+            <div>   <header>
+                <h1> Tic-Tac-Toe </h1>
+                </header>
 
-                <tr>
-                    <Square num={6}/>
-                    <Square num={7}/>
-                    <Square num={8}/>
-                </tr>
+            </div>
+            <div>
+                <table className="board">
+                    <tbody>
+                    <tr>
+                        <Square num={0}/>
+                        <Square num={1}/>
+                        <Square num={2}/>
+                    </tr>
+                    <tr>
+                        <Square num={3}/>
+                        <Square num={4}/>
+                        <Square num={5}/>
+                    </tr>
 
-                </tbody>
-            </table>
+                    <tr>
+                        <Square num={6}/>
+                        <Square num={7}/>
+                        <Square num={8}/>
+                    </tr>
 
-            {/*No winners or draw yet*/}
-            {winner !== "X" && winner !== "O" && winner !== "DRAW" && <div className="to-play">To play: {turn}</div>}
+                    </tbody>
+                </table>
 
-            {/*Winner or draw*/}
-            {winner !== "NONE" && winner !== "DRAW" && <div className="winner">Winner: {winner}</div> }
-            {winner === "DRAW" && <div className="winner">Draw</div>}
-            {winner !== "NONE" && <div className="reset"><button onClick={resetBoard}>Reset</button></div>}
+                {/*No winners or draw yet*/}
+                {winner !== "X" && winner !== "O" && winner !== "DRAW" &&
+                <div className="to-play">
+                    <h2>To play: {turn}</h2>
+                </div>}
+
+                {/*Winner or draw*/}
+                {winner !== "NONE" && winner !== "DRAW" && <div className="winner"><h2>Winner: {winner}</h2></div>}
+                {winner === "DRAW" && <div className="winner"><h2>Draw</h2></div>}
+                {winner !== "NONE" && <div className="reset">
+                    <button onClick={resetBoard}>Reset</button>
+                </div>}
 
 
+            </div>
         </div>
+
     );
 
 }

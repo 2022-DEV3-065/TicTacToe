@@ -1,7 +1,6 @@
 package com.dev3065.TicTacToe.controller;
 
 import com.dev3065.TicTacToe.domain.IncomingJSON;
-import com.dev3065.TicTacToe.domain.Player;
 import com.dev3065.TicTacToe.domain.ResponseJSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -13,20 +12,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.inject.Inject;
-import java.nio.charset.Charset;
 import java.util.List;
 
-
-import static org.junit.jupiter.api.Assertions.*;
+import static com.dev3065.TicTacToe.domain.Player.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static com.dev3065.TicTacToe.domain.Player.*;
 
 @WebMvcTest(LogicController.class)
 @ExtendWith(SpringExtension.class)

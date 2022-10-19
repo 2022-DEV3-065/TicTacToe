@@ -2,9 +2,9 @@ package com.dev3065.TicTacToe;
 
 import com.dev3065.TicTacToe.domain.Player;
 
-import static com.dev3065.TicTacToe.domain.Player.*;
-
 import java.util.List;
+
+import static com.dev3065.TicTacToe.domain.Player.EMPTY;
 
 public class Helper {
 
