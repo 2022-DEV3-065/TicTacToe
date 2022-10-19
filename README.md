@@ -1,12 +1,12 @@
 # TicTacToe
 
-###To run on Docker (recommended):
+### To run on Docker (recommended):
 1. Run Docker on your machine.
 2. Run ```docker pull 2022dev3065/tictactoe```
 3. Run ```docker run -p 8080:8080 2022dev3065/tictactoe```
 4. The application should be running at : http://localhost:8080/index.html
 
-###If you want to compile and run locally:
+### If you want to compile and run locally:
 1. Clone and ```cd``` into the repository.
 2. Set Java version to 17:
    ```export JAVA_HOME= **/path/to/java17**``` 
