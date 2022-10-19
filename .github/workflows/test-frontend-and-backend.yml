@@ -6,7 +6,7 @@ on:
 
 jobs:
   test-backend-and-frontend:
-    name: Test - Backend
+    name: Test - Backend and Frontend
     runs-on: ubuntu-latest
 
     steps:
