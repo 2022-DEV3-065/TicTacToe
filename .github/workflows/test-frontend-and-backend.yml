@@ -5,28 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test-frontend:
-    name: Test - Frontend
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: src/main/frontend
-    steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run test command
-        run: npm test
-
-  test-backend:
+  test-backend-and-frontend:
     name: Test - Backend
     runs-on: ubuntu-latest
 
@@ -40,4 +19,4 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn test
+        run: mvn clean install

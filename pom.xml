@@ -120,6 +120,17 @@
 							<arguments>build</arguments>
 						</configuration>
 					</execution>
+
+					<execution>
+						<id>run frontend tests</id>
+						<goals>
+							<goal>yarn</goal>
+						</goals>
+						<configuration>
+							<arguments>test --watchAll=false</arguments>
+						</configuration>
+					</execution>
+
 				</executions>
 			</plugin>
 			<plugin>
