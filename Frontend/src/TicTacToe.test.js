@@ -35,7 +35,7 @@ test('check if square 0 is updated with X on click.', async () => {
     render(<App/>);
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
 
             const {state, squareClicked} = req.body;
 
@@ -62,7 +62,7 @@ test('check if other squares are updated with X on first click.', async () => {
     render(<App/>);
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
 
             const {state, squareClicked} = req.body;
 
@@ -91,7 +91,7 @@ test('check if second click is an O', async () => {
     let emptyBoard = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
 
             const {state, squareClicked, turn} = req.body;
 
@@ -152,7 +152,7 @@ test('check if whose turn is displayed (Second move)', async () => {
     let emptyBoard = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
             const {state, squareClicked, turn} = req.body;
 
             if (state.toString() === emptyBoard.toString()) {
@@ -189,7 +189,7 @@ test('O plays on played position with X', async () => {
     let emptyBoard = ["-", "-", "-", "-", "-", "-", "-", "-", "-"];
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
 
             const {state, squareClicked, turn} = req.body;
 
@@ -243,7 +243,7 @@ test('check when X is a winner', async () => {
     const {container} = render(<App/>);
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
             return res(ctx.json(
                 {
                     state: [
@@ -281,7 +281,7 @@ test('check when O is a winner', async () => {
     const {container} = render(<App/>);
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
             return res(ctx.json(
                 {
                     state: [
@@ -318,7 +318,7 @@ test('check for a draw', async () => {
     const {container} = render(<App/>);
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
             return res(ctx.json(
                 {
                     state: [
@@ -356,7 +356,7 @@ test('check for board being unlickable when there is a draw', async () => {
     console.log = jest.fn();
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
             return res(ctx.json(
                 {
                     state: [
@@ -399,7 +399,7 @@ test('check for board being unlickable when there is a winner', async () => {
     console.log = jest.fn();
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
             return res(ctx.json(
                 {
                     state: [
@@ -440,7 +440,7 @@ test('reset board', async () => {
     const {container} = render(<App/>);
 
     server.use(
-        rest.post('/logic', (req, res, ctx) => {
+        rest.post('http://localhost:8080/logic', (req, res, ctx) => {
             return res(ctx.json(
                 {
                     state: [

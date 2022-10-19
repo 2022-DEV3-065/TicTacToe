@@ -17,7 +17,7 @@ const TicTacToe = () => {
         if (winner === "NONE") {
             const state = squares.slice();
 
-            await fetch('/logic', {
+            await fetch('http://localhost:8080/logic', {
                 method: 'POST',
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({state, squareClicked, turn})
