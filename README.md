@@ -10,7 +10,7 @@
 4. Run ```java -jar target/springboot-tictactoe.jar``` to run the application.
 
 ### Frontend:
-1. The react application code resides in ```cd Frontend```
+1. From root dir: ```cd Frontend```
 2. To run the frontend tests, run ```npm test``` in the ```src/main/frontend``` directory.
 3. Run the app using ```npm start```
 3. The application should be running at : http://localhost:3000
