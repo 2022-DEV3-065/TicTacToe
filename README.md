@@ -11,6 +11,7 @@
 
 ### Frontend:
 1. From root dir: ```cd Frontend```
-2. To run the frontend tests, run ```npm test```.
-3. Run the app using ```npm start```
-3. The application should be running at : http://localhost:3000
+2. ```npm install``` to get dependencies
+3. To run the frontend tests, run ```npm test```.
+4. Run the app using ```npm start```
+5. The application should be running at : http://localhost:3000
