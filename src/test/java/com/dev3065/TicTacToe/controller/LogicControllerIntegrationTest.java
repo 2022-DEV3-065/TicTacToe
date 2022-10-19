@@ -96,21 +96,6 @@ class LogicControllerIntegrationTest {
 
 
     @Test
-    void throwErrorWhenPlayerPlaysOnOccupiedSquare() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 1, O);
-
-        mockMvc
-                .perform(post("/logic")
-                        .contentType(APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper
-                                .writeValueAsString(incomingJson)))
-                .andExpect(status().isBadRequest());
-
-    }
-
-    @Test
     void winnerPresent_InARow() throws Exception {
         IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, X, EMPTY, O, O, EMPTY, EMPTY, EMPTY), 0, X);
 
@@ -179,6 +164,67 @@ class LogicControllerIntegrationTest {
 
         ResponseJSON expectedResponse = new ResponseJSON(List.of(X, O, X, O, X, X, O, X, O), "DRAW");
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
+
+    }
+
+    @Test
+    void throwErrorWhenPlayerPlaysOnOccupiedSquare() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 1, O);
+
+        mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andExpect(status().isBadRequest());
+
+    }
+
+
+    @Test
+    void throwErrorWhenPlayerPlaysOnSquareOutsideTheBoard() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 10, O);
+
+        mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    void throwErrorWhenPlayerIsNotXorO() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 1, EMPTY);
+
+        mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    void throwErrorWhenSquareClickIsNot0to8() throws Exception {
+        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), -1, X);
+
+        mockMvc
+                .perform(post("/logic")
+                        .contentType(APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper
+                                .writeValueAsString(incomingJson)))
+                .andExpect(status().isBadRequest());
 
     }
 

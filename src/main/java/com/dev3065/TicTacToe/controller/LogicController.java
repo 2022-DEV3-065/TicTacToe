@@ -18,25 +18,23 @@ import static com.dev3065.TicTacToe.domain.Player.*;
 @RestController
 public class LogicController {
 
-    private static final Logger LOGGER = getLogger(LogicController.class);
-
     @PostMapping("/logic")
     public ResponseEntity<ResponseJSON> handler(@RequestBody IncomingJSON incomingJSON) {
 
-        if (!incomingJSON.getState().get(incomingJSON.getSquareClicked()).equals(EMPTY)) {
+        if (incomingJSON.isValid()) {
+            ResponseJSON responseJSON = new ResponseJSON(incomingJSON.getState(), "NONE");
+            responseJSON.setSquareClicked(incomingJSON.getSquareClicked(), incomingJSON.getTurn());
+
+            if (winCondition(responseJSON.getState())) {
+                responseJSON.setWinner(incomingJSON.getTurn().toString());
+            } else if (drawCondition(responseJSON.getState())) {
+                responseJSON.setWinner("DRAW");
+            }
+
+            return new ResponseEntity<>(responseJSON, HttpStatus.OK);
+        }
+        else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        ResponseJSON responseJSON = new ResponseJSON(incomingJSON.getState(), "NONE");
-        responseJSON.setSquareClicked(incomingJSON.getSquareClicked(), incomingJSON.getTurn());
-
-        if (winCondition(responseJSON.getState())) {
-            responseJSON.setWinner(incomingJSON.getTurn().toString());
-        }
-        else if (drawCondition(responseJSON.getState())) {
-            responseJSON.setWinner("DRAW");
-        }
-
-        return new ResponseEntity<>(responseJSON, HttpStatus.OK);
     }
 }

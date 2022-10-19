@@ -27,7 +27,7 @@ const TicTacToe = () => {
                         return response.json()
                     }
                     if (response.status === 400) {
-                        return Promise.reject("Square already played");
+                        return Promise.reject("Bad request");
                     }
                 })
                 .then((data) => {
