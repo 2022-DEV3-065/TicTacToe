@@ -207,8 +207,7 @@ test('O plays on played position with X', async () => {
                 ctx.status(400),
                 ctx.json(
                     {
-                        state: ["X", "-", "-", "-", "-", "-", "-", "-", "-"],
-                        error: "Square already played"
+                        state: ["X", "-", "-", "-", "-", "-", "-", "-", "-"]
                     }
                 ));
         })
@@ -228,7 +227,7 @@ test('O plays on played position with X', async () => {
     userEvent.click(element);
 
     //error should be logged
-    await waitFor(() => expect(console.log).toHaveBeenCalledWith("Square already played"));
+    await waitFor(() => expect(console.log).toHaveBeenCalledWith("Bad request"));
 
     //square should still be X
     await waitFor(() => expect(screen.getAllByRole("cell", {class: "square"})[0].textContent).toBe("X"));
