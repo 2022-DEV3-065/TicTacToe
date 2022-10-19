@@ -6,7 +6,7 @@
 1. Clone and ```cd Backend``` into the Backend repository.
 2. Set Java version to 17:
    ```export JAVA_HOME= **/path/to/java17**```
-3. Run ```mvn clean install``` in main directory, to compile and run tests for both backend and frontend.
+3. Run ```mvn clean install``` in main directory, to test and compile the backend.
 4. Run ```java -jar target/springboot-tictactoe.jar``` to run the application.
 
 ### Frontend:
