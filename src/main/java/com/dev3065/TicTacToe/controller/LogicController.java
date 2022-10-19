@@ -1,6 +1,7 @@
 package com.dev3065.TicTacToe.controller;
 
 import com.dev3065.TicTacToe.domain.IncomingJSON;
+import com.dev3065.TicTacToe.domain.Player;
 import com.dev3065.TicTacToe.domain.ResponseJSON;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -9,9 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
+import static com.dev3065.TicTacToe.Helper.drawCondition;
+import static com.dev3065.TicTacToe.Helper.winCondition;
 import static org.slf4j.LoggerFactory.getLogger;
+import static com.dev3065.TicTacToe.domain.Player.*;
 
 @RestController
 public class LogicController {
@@ -21,7 +23,7 @@ public class LogicController {
     @PostMapping("/logic")
     public ResponseEntity<ResponseJSON> handler(@RequestBody IncomingJSON incomingJSON) {
 
-        if (!incomingJSON.getState().get(incomingJSON.getSquareClicked()).equals("-")) {
+        if (!incomingJSON.getState().get(incomingJSON.getSquareClicked()).equals(EMPTY)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -29,44 +31,12 @@ public class LogicController {
         responseJSON.setSquareClicked(incomingJSON.getSquareClicked(), incomingJSON.getTurn());
 
         if (winCondition(responseJSON.getState())) {
-            responseJSON.setWinner(incomingJSON.getTurn());
+            responseJSON.setWinner(incomingJSON.getTurn().toString());
         }
         else if (drawCondition(responseJSON.getState())) {
             responseJSON.setWinner("DRAW");
         }
 
         return new ResponseEntity<>(responseJSON, HttpStatus.OK);
-    }
-
-    private boolean drawCondition(List<String> state) {
-        for (String s : state) {
-            if (s.equals("-")) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean winCondition(List<String> state) {
-        state = state.subList(0, 9);
-        if (state.get(0).equals(state.get(1)) && state.get(1).equals(state.get(2)) && !state.get(0).equals("-")) {
-            return true;
-        } else if (state.get(3).equals(state.get(4)) && state.get(4).equals(state.get(5)) && !state.get(3).equals("-")) {
-            return true;
-        } else if (state.get(6).equals(state.get(7)) && state.get(7).equals(state.get(8)) && !state.get(6).equals("-")) {
-            return true;
-        } else if (state.get(0).equals(state.get(3)) && state.get(3).equals(state.get(6)) && !state.get(0).equals("-")) {
-            return true;
-        } else if (state.get(1).equals(state.get(4)) && state.get(4).equals(state.get(7)) && !state.get(1).equals("-")) {
-            return true;
-        } else if (state.get(2).equals(state.get(5)) && state.get(5).equals(state.get(8)) && !state.get(2).equals("-")) {
-            return true;
-        } else if (state.get(0).equals(state.get(4)) && state.get(4).equals(state.get(8)) && !state.get(0).equals("-")) {
-            return true;
-        } else if (state.get(2).equals(state.get(4)) && state.get(4).equals(state.get(6)) && !state.get(2).equals("-")) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

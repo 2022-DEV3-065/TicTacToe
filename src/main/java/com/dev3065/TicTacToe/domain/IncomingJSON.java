@@ -4,20 +4,20 @@ import java.util.List;
 
 public class IncomingJSON {
 
-    private List<String> state;
+    private List<Player> state;
     private Integer squareClicked;
-    private String turn;
+    private Player turn;
 
     public IncomingJSON() {
     }
 
-    public IncomingJSON(List<String> state, Integer squareClicked, String turn) {
+    public IncomingJSON(List<Player> state, Integer squareClicked, Player turn) {
         this.state = state;
         this.squareClicked = squareClicked;
         this.turn = turn;
     }
 
-    public List<String> getState() {
+    public List<Player> getState() {
         return state;
     }
 
@@ -25,11 +25,11 @@ public class IncomingJSON {
         return squareClicked;
     }
 
-    public void setState(List<String> state) {
+    public void setState(List<Player> state) {
         this.state = state;
     }
 
-    public String getTurn() {
+    public Player getTurn() {
         return turn;
     }
 }

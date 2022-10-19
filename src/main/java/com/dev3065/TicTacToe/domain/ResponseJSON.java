@@ -4,26 +4,26 @@ import java.util.List;
 
 public class ResponseJSON {
 
-    private List<String> state;
+    private List<Player> state;
     private String winner;
 
     public ResponseJSON() {
     }
 
-    public ResponseJSON(List<String> state, String winner) {
+    public ResponseJSON(List<Player> state, String winner) {
         this.state = state;
         this.winner = winner;
     }
 
-    public List<String> getState() {
+    public List<Player> getState() {
         return state;
     }
 
-    public void setState(List<String> state) {
+    public void setState(List<Player> state) {
         this.state = state;
     }
 
-    public void setSquareClicked(Integer squareClicked, String turn) {
+    public void setSquareClicked(Integer squareClicked, Player turn) {
         state.set(squareClicked, turn);
     }
 
