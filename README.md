@@ -4,7 +4,7 @@
 1. Run Docker on your machine.
 2. Run ```docker pull 2022dev3065/tictactoe```
 3. Run ```docker run -p 8080:8080 2022dev3065/tictactoe```
-4. The application should be running at : http://localhost:8080/index.html
+4. The application should be running at : http://localhost:8080
 
 ### If you want to compile and run locally:
 1. Clone and ```cd``` into the repository.
@@ -12,7 +12,7 @@
    ```export JAVA_HOME= **/path/to/java17**``` 
 3. Run ```mvn clean install``` in mainå directory, to compile and run tests for both backend and frontend.
 4. Run ```java -jar target/springboot-tictactoe.jar``` to run the application.
-5. The application should be running at : http://localhost:8080/index.html
+5. The application should be running at : http://localhost:8080
 
 ## For Developers:
 
