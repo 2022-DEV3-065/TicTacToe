@@ -2,7 +2,6 @@ package com.dev3065.TicTacToe.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;

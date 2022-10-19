@@ -1,9 +1,7 @@
 package com.dev3065.TicTacToe.controller;
 
 import com.dev3065.TicTacToe.domain.IncomingJSON;
-import com.dev3065.TicTacToe.domain.Player;
 import com.dev3065.TicTacToe.domain.ResponseJSON;
-import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.dev3065.TicTacToe.Helper.drawCondition;
 import static com.dev3065.TicTacToe.Helper.winCondition;
-import static org.slf4j.LoggerFactory.getLogger;
-import static com.dev3065.TicTacToe.domain.Player.*;
 
 @RestController
 public class LogicController {

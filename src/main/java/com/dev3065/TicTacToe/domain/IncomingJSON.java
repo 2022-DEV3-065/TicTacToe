@@ -1,6 +1,5 @@
 package com.dev3065.TicTacToe.domain;
 
-import com.dev3065.TicTacToe.controller.LogicController;
 import org.slf4j.Logger;
 
 import java.util.List;
