@@ -1,23 +1,21 @@
-package com.dev3065.TicTacToe;
+package com.dev3065.TicTacToe.helpers;
 
 import com.dev3065.TicTacToe.domain.Player;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.dev3065.TicTacToe.domain.Player.EMPTY;
 
-public class Helper {
+public class WinOrDrawConditionChecker {
 
-    public static boolean drawCondition(List<Player> state) {
-        for (Player s : state) {
-            if (s.equals(EMPTY)) {
-                return false;
-            }
-        }
-        return true;
+    public static boolean isADraw(List<Player> state) {
+        return state
+            .stream()
+            .allMatch(square -> square != EMPTY);
     }
 
-    public static boolean winCondition(List<Player> state) {
+    public static boolean isAWin(List<Player> state) {
         state = state.subList(0, 9);
         return isWinningLine(0, 1, 2, state) ||
                 isWinningLine(3, 4, 5, state) ||

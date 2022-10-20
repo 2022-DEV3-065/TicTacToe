@@ -2,15 +2,15 @@ package com.dev3065.TicTacToe.domain;
 
 import java.util.List;
 
-public class ResponseJSON {
+public class ResponseDTO {
 
     private List<Player> state;
     private String winner;
 
-    public ResponseJSON() {
+    public ResponseDTO() {
     }
 
-    public ResponseJSON(List<Player> state, String winner) {
+    public ResponseDTO(List<Player> state, String winner) {
         this.state = state;
         this.winner = winner;
     }

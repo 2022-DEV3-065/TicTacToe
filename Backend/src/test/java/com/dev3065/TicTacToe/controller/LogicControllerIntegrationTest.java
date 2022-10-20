@@ -1,7 +1,7 @@
 package com.dev3065.TicTacToe.controller;
 
-import com.dev3065.TicTacToe.domain.IncomingJSON;
-import com.dev3065.TicTacToe.domain.ResponseJSON;
+import com.dev3065.TicTacToe.domain.IncomingDTO;
+import com.dev3065.TicTacToe.domain.ResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +37,7 @@ class LogicControllerIntegrationTest {
 
     @Test
     void receivesBoardState() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 0, X);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 0, X);
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -45,17 +45,17 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of(X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), "NONE");
+        ResponseDTO expectedResponse = new ResponseDTO(List.of(X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), "NONE");
 
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }
 
     @Test
     void handleClickOnAnyOtherSquareThanTheFirst() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 1, X);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 1, X);
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -63,17 +63,17 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY),"NONE");
+        ResponseDTO expectedResponse = new ResponseDTO(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY),"NONE");
 
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }
 
     @Test
     void updateSquareAccordingToTurn() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 0, O);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 0, O);
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -81,10 +81,10 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of(O, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), "NONE");
+        ResponseDTO expectedResponse = new ResponseDTO(List.of(O, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), "NONE");
 
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
     }
@@ -92,7 +92,7 @@ class LogicControllerIntegrationTest {
 
     @Test
     void winnerPresent_InARow() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, X, EMPTY, O, O, EMPTY, EMPTY, EMPTY), 0, X);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(EMPTY, X, X, EMPTY, O, O, EMPTY, EMPTY, EMPTY), 0, X);
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -100,17 +100,17 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of(X, X, X, EMPTY, O, O, EMPTY, EMPTY, EMPTY), "X");
+        ResponseDTO expectedResponse = new ResponseDTO(List.of(X, X, X, EMPTY, O, O, EMPTY, EMPTY, EMPTY), "X");
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
 
     }
 
     @Test
     void winnerPresent_InAColumn() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, X, EMPTY, O, EMPTY, X, O), 2,   O);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(EMPTY, X, EMPTY, X, EMPTY, O, EMPTY, X, O), 2,   O);
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -118,17 +118,17 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of(EMPTY, X, O, X, EMPTY, O, EMPTY, X, O), "O");
+        ResponseDTO expectedResponse = new ResponseDTO(List.of(EMPTY, X, O, X, EMPTY, O, EMPTY, X, O), "O");
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
 
     }
 
     @Test
     void winnerPresent_InADiagonal() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(X, X, EMPTY, EMPTY, X, O, O, O, EMPTY), 8, X);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(X, X, EMPTY, EMPTY, X, O, O, O, EMPTY), 8, X);
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -136,17 +136,17 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of(X, X, EMPTY, EMPTY, X, O, O, O, X), "X");
+        ResponseDTO expectedResponse = new ResponseDTO(List.of(X, X, EMPTY, EMPTY, X, O, O, O, X), "X");
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
 
     }
 
     @Test
     void draw() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(X, O, X, O, X, X, O, EMPTY, O), 7, X);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(X, O, X, O, X, X, O, EMPTY, O), 7, X);
 
         MvcResult result = mockMvc
                 .perform(post("/logic")
@@ -154,17 +154,17 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andReturn();
 
-        ResponseJSON expectedResponse = new ResponseJSON(List.of(X, O, X, O, X, X, O, X, O), "DRAW");
+        ResponseDTO expectedResponse = new ResponseDTO(List.of(X, O, X, O, X, X, O, X, O), "DRAW");
         assertEquals(objectMapper.writeValueAsString(expectedResponse), result.getResponse().getContentAsString());
 
     }
 
     @Test
     void throwErrorWhenPlayerPlaysOnOccupiedSquare() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 1, O);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 1, O);
 
         mockMvc
                 .perform(post("/logic")
@@ -172,7 +172,7 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andExpect(status().isBadRequest());
 
     }
@@ -180,7 +180,7 @@ class LogicControllerIntegrationTest {
 
     @Test
     void throwErrorWhenPlayerPlaysOnSquareOutsideTheBoard() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 10, O);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 10, O);
 
         mockMvc
                 .perform(post("/logic")
@@ -188,14 +188,14 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andExpect(status().isBadRequest());
 
     }
 
     @Test
     void throwErrorWhenPlayerIsNotXorO() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 1, EMPTY);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), 1, EMPTY);
 
         mockMvc
                 .perform(post("/logic")
@@ -203,14 +203,14 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andExpect(status().isBadRequest());
 
     }
 
     @Test
     void throwErrorWhenSquareClickIsNot0to8() throws Exception {
-        IncomingJSON incomingJson = new IncomingJSON(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), -1, X);
+        IncomingDTO incomingDTO = new IncomingDTO(List.of(EMPTY, X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY), -1, X);
 
         mockMvc
                 .perform(post("/logic")
@@ -218,7 +218,7 @@ class LogicControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper
-                                .writeValueAsString(incomingJson)))
+                                .writeValueAsString(incomingDTO)))
                 .andExpect(status().isBadRequest());
 
     }
