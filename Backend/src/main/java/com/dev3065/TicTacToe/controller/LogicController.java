@@ -1,7 +1,7 @@
 package com.dev3065.TicTacToe.controller;
 
-import com.dev3065.TicTacToe.domain.IncomingJSON;
-import com.dev3065.TicTacToe.domain.ResponseJSON;
+import com.dev3065.TicTacToe.domain.IncomingDTO;
+import com.dev3065.TicTacToe.domain.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,27 +9,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.dev3065.TicTacToe.Helper.drawCondition;
-import static com.dev3065.TicTacToe.Helper.winCondition;
+import static com.dev3065.TicTacToe.helpers.WinOrDrawConditionChecker.isADraw;
+import static com.dev3065.TicTacToe.helpers.WinOrDrawConditionChecker.isAWin;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class LogicController {
 
     @PostMapping("/logic")
-    public ResponseEntity<ResponseJSON> handler(@RequestBody IncomingJSON incomingJSON) {
+    public ResponseEntity<ResponseDTO> handler(@RequestBody IncomingDTO incomingJSON) {
 
         if (incomingJSON.isValid()) {
-            ResponseJSON responseJSON = new ResponseJSON(incomingJSON.getState(), "NONE");
-            responseJSON.setSquareClicked(incomingJSON.getSquareClicked(), incomingJSON.getTurn());
+            ResponseDTO responseDTO = new ResponseDTO(incomingJSON.getState(), "NONE");
+            responseDTO.setSquareClicked(incomingJSON.getSquareClicked(), incomingJSON.getTurn());
 
-            if (winCondition(responseJSON.getState())) {
-                responseJSON.setWinner(incomingJSON.getTurn().toString());
-            } else if (drawCondition(responseJSON.getState())) {
-                responseJSON.setWinner("DRAW");
+            if (isAWin(responseDTO.getState())) {
+                responseDTO.setWinner(incomingJSON.getTurn().toString());
+            } else if (isADraw(responseDTO.getState())) {
+                responseDTO.setWinner("DRAW");
             }
 
-            return new ResponseEntity<>(responseJSON, HttpStatus.OK);
+            return new ResponseEntity<>(responseDTO, HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

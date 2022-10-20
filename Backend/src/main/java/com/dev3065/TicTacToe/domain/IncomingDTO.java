@@ -7,18 +7,18 @@ import java.util.List;
 import static com.dev3065.TicTacToe.domain.Player.EMPTY;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class IncomingJSON {
+public class IncomingDTO {
 
-    private static final Logger LOGGER = getLogger(IncomingJSON.class);
+    private static final Logger LOGGER = getLogger(IncomingDTO.class);
 
     private List<Player> state;
     private Integer squareClicked;
     private Player turn;
 
-    public IncomingJSON() {
+    public IncomingDTO() {
     }
 
-    public IncomingJSON(List<Player> state, Integer squareClicked, Player turn) {
+    public IncomingDTO(List<Player> state, Integer squareClicked, Player turn) {
         this.state = state;
         this.squareClicked = squareClicked;
         this.turn = turn;
